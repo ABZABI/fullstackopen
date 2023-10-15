@@ -1,5 +1,9 @@
-JAVASCRIPT
-==========
+A. INTRODUCTION TO REACT
+========================
+https://fullstackopen.com/en/part1/introduction_to_react
+
+B. JAVASCRIPT
+==============
 Node.js is a JavaScript runtime environment based on Google's    Chrome V8 JavaScript engine and works practically anywhere - from servers to mobile phones.
 
 Arrays
@@ -59,3 +63,252 @@ Functions
 
         const result = average(2, 5)
         // result is now 3.5
+
+Object methods and "this"
+--------------------------
+-   We can assign methods to an object by defining properties that are functions
+ex. const arto = {
+        name: 'Arto Hellas',
+        age: 35,
+        education: 'PhD',
+        greet: function() {
+            console.log('hello, my name is ' + this.name)
+        },
+    }
+
+-   Methods can be assigned to objects even after the creation of the object
+ex. const arto = {
+        name: 'Arto Hellas',
+        age: 35,
+        education: 'PhD',
+        greet: function() {
+            console.log('hello, my name is ' + this.name)
+        },
+    }
+
+    arto.growOlder = function() {
+        this.age += 1
+    }
+
+-   When calling the method through a reference, the method loses knowledge of what the original "this" was    
+ex. arto.greet()    // "hello, my name is Arto Hellas" gets printed
+
+    const referenceToGreet = arto.greet
+    referenceToGreet() // prints "hello, my name is undefined"
+
+-   Contrary to other languages, in JavaScript the value of "this" is defined based on how the method is called. When calling the method through a reference, the value of "this" becomes the so-called global object and the end result is often not what the software developer had originally intended.
+
+-   One situation leading to the "disappearance" of "this" arises when we set a timeout to call the greet function on the arto object, using the setTimeout function.
+Code snippet:   
+    const arto = {
+        name: 'Arto Hellas',
+        greet: function() {
+            console.log('hello, my name is ' + this.name)
+        },
+    }
+
+    setTimeout(arto.greet, 1000)
+
+-As mentioned, the value of "this" in JavaScript is defined based on how the method is being called. When setTimeout is calling the method, it is the JavaScript engine that actually calls the method and, at that point, this refers to the global object.
+
+-   There are several mechanisms by which the original this can be preserved. One of these is using a method called "bind" when using the "setTimeout" method
+ex.  setTimeout(arto.greet.bind(arto), 1000)
+
+-   Calling arto.greet.bind(arto) creates a new function where this is bound to point to Arto, independent of where and how the method is being called.
+
+-Using arrow functions it is possible to solve some of the problems related to this. They should not, however, be used as methods for objects because then this does not work at all.
+
+Classes
+--------
+-   In the following example we define a "class" called Person and two Person objects
+Sample Class Syntax:
+    class Person {
+        constructor(name, age) {
+            this.name = name
+            this.age = age
+        }
+        greet() {
+            console.log('hello, my name is ' + this.name)
+        }
+    }
+
+    const adam = new Person('Adam Ondra', 29)
+    adam.greet()
+
+    const janja = new Person('Janja Garnbret', 23)
+    janja.greet()
+
+Some JS in depth resources
+---------------------------
+1. https://developer.mozilla.org/en-US/docs/Web/JavaScript
+2. https://github.com/getify/You-Dont-Know-JS/tree/2nd-ed
+3. https://javascript.info/
+4. https://www.youtube.com/playlist?list=PLlasXeu85E9cQ32gLCvAvr9vNaUccPVNP //Namaste 🙏 JavaScript
+
+
+C. COMPONENT STATE, EVENT HANDLERS
+===================================
+Component helper functions
+----------------------------
+-   If we examine the code below closely, we'll notice that the helper function is defined inside of another function that defines the behavior of our component
+ex. const Hello = (props) => {
+        const bornYear = () => {
+            const yearNow = new Date().getFullYear()
+            return yearNow - props.age
+        }
+
+        return (
+            <div>
+            <p>
+                Hello {props.name}, you are {props.age} years old
+            </p>
+            <p>So you were probably born in {bornYear()}</p>
+            </div>
+        )
+    }
+    
+-   In JavaScript, defining functions within functions is a commonly-used technique.
+
+Destructuring
+--------------
+- Since props is an object we can streamline our component by assigning the values of the properties directly into variables which we can then use in our code.
+ex. const Hello = (props) => {
+        const name = props.name
+        const age = props.age
+
+        const bornYear = () => new Date().getFullYear() - age
+
+        return (
+            <div>
+            <p>Hello {name}, you are {age} years old</p>
+            <p>So you were probably born in {bornYear()}</p>
+            </div>
+        )
+    }
+
+-   Destructuring makes the assignment of variables even easier since we can use it to extract and gather the values of an object's properties into separate variables
+ex. const Hello = (props) => {
+        const { name, age } = props
+        const bornYear = () => new Date().getFullYear() - age
+
+        return (
+            <div>
+            <p>Hello {name}, you are {age} years old</p>
+            <p>So you were probably born in {bornYear()}</p>
+            </div>
+        )
+    }
+
+-   We can take destructuring a step further
+ex. const Hello = ({ name, age }) => {
+        const bornYear = () => new Date().getFullYear() - age
+
+        return (
+            <div>
+            <p>Hello {name}, you are {age} years old</p>
+            <p>So you were probably born in {bornYear()}</p>
+            </div>
+        )
+    }  
+
+Page re-rendering
+------------------
+- Making repeated calls to the render method is not the recommended way to re-render components. 
+ex. let counter = 1
+
+    const refresh = () => {
+    ReactDOM.createRoot(document.getElementById('root')).render(
+        <App counter={counter} />
+    )
+    }
+
+    refresh()
+    counter += 1
+    refresh()
+    counter += 1
+    refresh()
+
+- Though we can implement slightly more interesting functionality by re-rendering and incrementing the counter every second by using setInterval
+ex. setInterval(() => {
+        refresh()
+        counter += 1
+    }, 1000)
+
+Stateful Component
+-------------------
+-   States are added to an App component with the help of React's state hook.
+
+-   First 'import { useState } from "react"', the module is imported
+
+-   The function body that defines the component begins with the function call
+ex. const [ counter, setCounter ] = useState(0) //example
+
+-   The function call adds state to the component and renders it initialized with the value of zero. The function returns an array that contains two items. We assign the items to the variables counter and setCounter by using the destructuring assignment syntax shown earlier.
+
+-   The counter variable is assigned the initial value of state which is zero. The variable setCounter is assigned a function that will be used to modify the state.
+
+-   If the component doesn't render when you think it should, or if it renders at the "wrong time", you can debug the application by logging the values of the component's variables to the console.
+ex. const App = () => {
+        const [ counter, setCounter ] = useState(0)
+
+        setTimeout(
+            () => setCounter(counter + 1),
+            1000
+        )
+
+
+        console.log('rendering...', counter)
+
+        return (
+            <div>{counter}</div>
+        )
+    }
+
+Event Handling
+---------------
+-   In React, registering an event handler function to the click event happens like this
+ex. 
+    const App = () => {
+        const [ counter, setCounter ] = useState(0)
+
+        //function can be directly done in button element
+        const handleClick = () => {
+            console.log('clicked')
+        }
+
+        return (
+            <div>
+            <div>{counter}</div>
+
+            <button onClick={handleClick}>
+                plus
+            </button>
+            /*
+                <button onClick={() => {setCounter(counter + 1)}}>
+                    plus
+                </button>
+            */
+            </div>
+        )
+    }
+
+-   An event handler is a function   
+
+-   Usually defining event handlers within JSX-templates is not a good idea. 
+
+Passing state - to child components
+------------------------------------
+-   It's recommended to write React components that are small and reusable across the application and even across projects.
+
+-   One best practice in React is to lift the state up in the component hierarchy. The documentation says:
+    "Often, several components need to reflect the same changing data. We recommend lifting the shared state up to their closest common ancestor."
+
+-   In React, it’s conventional to use onSomething names for props which represent events and handleSomething for the function definitions which handle those events.
+
+** Changes in state cause rerendering
+
+
+C. A MORE COMPLEX STATE, DEBUGGING REACT APPS
+==============================================
+Complex state
+-------------
