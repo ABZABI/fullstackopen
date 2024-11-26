@@ -1,13 +1,21 @@
 ==========
 PART ONE
 ==========
+
+-----------------------------------------
+Adding tailwind css temporarily
+
+<script src="https://cdn.tailwindcss.com"></script>
+-----------------------------------------
+
+
 A. INTRODUCTION TO REACT
 ========================
 https://fullstackopen.com/en/part1/introduction_to_react
 
 B. JAVASCRIPT
 ==============
-Node.js is a JavaScript runtime environment based on Google's    Chrome V8 JavaScript engine and works practically anywhere - from servers to mobile phones.
+Node.js is a JavaScript runtime environment based on Google's Chrome V8 JavaScript engine and works practically anywhere - from servers to mobile phones.
 
 Arrays
 -------
