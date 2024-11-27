@@ -418,6 +418,30 @@ Event Handling Revisited
 
 -   Event handlers are defined as a function call which means that the event handler is assigned the returned value from the function.
 
+A function that returns a function
+-----------------------------------
+- Another way to define an event handler is to use a function that returns a function.
+
+- Functions returning functions can be utilized in defining generic functionality that can be customized with parameters.
+ex.
+    const App = () => {
+    const [value, setValue] = useState(10)
+    
+    const setToValue = (newValue) => () => {
+        console.log('value now', newValue)  // print the new value to console
+        setValue(newValue)
+    }
+    
+    return (
+        <div>
+        {value}
+        <button onClick={setToValue(1000)}>thousand</button>
+        <button onClick={setToValue(0)}>reset</button>
+        <button onClick={setToValue(value + 1)}>increment</button>
+        </div>
+    )
+    }
+
 Useful Reading
 ---------------
 -   You may find the following links useful
@@ -431,6 +455,10 @@ Programming is hard, that is why I will use all the possible means to make it ea
 -   I will write lots of console.log statements to make sure I understand how the code behaves and to help pinpointing problems
 -   If my code does not work, I will not write more code. Instead - I start deleting the code until it works or just return to a state when everything was still working
 -   When I ask for help in the course Discord or Telegram channel or elsewhere I formulate my questions properly (https://fullstackopen.com/en/part0/general_info#how-to-get-help-in-discord-telegram)
+
+Utilization of Large language models
+-------------------------------------
+- Large language models such as ChatGPT(https://chat.openai.com/auth/login), Claude(https://claude.ai/) and GitHub Copilot(https://github.com/features/copilot) have proven to be very useful in software development.
 
 ==========
 PART TWO
