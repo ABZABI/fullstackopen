@@ -1,39 +1,5 @@
 import { useState } from "react";
-
-const Header = (props) => {
-  // console.log(props);
-  return <h1 className="font-bold text-2xl mb-4">{props.course}</h1>;
-};
-
-const Part = (props) => {
-  return (
-    <p>
-      {props.part} {props.exercise}
-    </p>
-  );
-};
-
-const Content = (props) => {
-  // console.log(props);
-  return (
-    <div>
-      <Part part={props.parts[0].name} exercise={props.parts[0].exercises} />
-      <Part part={props.parts[1].name} exercise={props.parts[1].exercises} />
-      <Part part={props.parts[2].name} exercise={props.parts[2].exercises} />
-    </div>
-  );
-};
-
-const Total = (props) => {
-  return (
-    <p>
-      Number of exercises{" "}
-      {props.parts[0].exercises +
-        props.parts[1].exercises +
-        props.parts[2].exercises}
-    </p>
-  );
-};
+import { Course } from "./components/Course";
 
 const App = () => {
   const [counter, setCounter] = useState(0);
@@ -51,39 +17,117 @@ const App = () => {
     setCounter(counter + 1);
   };
 
-  const course = {
-    name: "Half Stack application development",
-    parts: [
-      {
-        name: "Fundamentals of React",
-        exercises: 10,
-      },
-      {
-        name: "Using props to pass data",
-        exercises: 7,
-      },
-      {
-        name: "State of a component",
-        exercises: 14,
-      },
-    ],
-  };
+  const courses = [
+    {
+      name: "Half Stack application development",
+      id: 1,
+      parts: [
+        {
+          name: "Fundamentals of React",
+          exercises: 10,
+          id: 1,
+        },
+        {
+          name: "Using props to pass data",
+          exercises: 7,
+          id: 2,
+        },
+        {
+          name: "State of a component",
+          exercises: 14,
+          id: 3,
+        },
+        {
+          name: "Redux",
+          exercises: 11,
+          id: 4,
+        },
+      ],
+    },
+    {
+      name: "Node.js",
+      id: 2,
+      parts: [
+        {
+          name: "Routing",
+          exercises: 3,
+          id: 1,
+        },
+        {
+          name: "Middlewares",
+          exercises: 7,
+          id: 2,
+        },
+      ],
+    },
+    {
+      name: "Node.js",
+      id: 3,
+      parts: [
+        {
+          name: "Routing",
+          exercises: 3,
+          id: 1,
+        },
+        {
+          name: "Middlewares",
+          exercises: 7,
+          id: 2,
+        },
+      ],
+    },
+    {
+      name: "Node.js",
+      id: 4,
+      parts: [
+        {
+          name: "Routing",
+          exercises: 3,
+          id: 1,
+        },
+        {
+          name: "Middlewares",
+          exercises: 7,
+          id: 2,
+        },
+      ],
+    },
+    {
+      name: "Half Stack application development",
+      id: 5,
+      parts: [
+        {
+          name: "Fundamentals of React",
+          exercises: 12,
+          id: 1,
+        },
+        {
+          name: "Using props to pass data",
+          exercises: 7,
+          id: 2,
+        },
+        {
+          name: "State of a component",
+          exercises: 14,
+          id: 3,
+        },
+        {
+          name: "Redux",
+          exercises: 11,
+          id: 4,
+        },
+      ],
+    },
+  ];
+
   return (
-    <div className="p-24 flex flex-col items-start gap-4">
-      <Header course={course.name} />
-      <hr />
-      <Content parts={course.parts} />
-      <hr />
-      <Total parts={course.parts} />
-      <span className="flex flex-col gap-2 border border-gray-200 p-2 rounded-lg">
-        <div>Counter: {counter}</div>
-        <button
-          onClick={handleClick}
-          className="border border-gray-400 p-1 px-6 rounded-lg hover:bg-gray-100 transition duration-400"
-        >
-          Plus
-        </button>
-      </span>
+    <div className="flex flex-col flex-wrap justify-center items-center gap-8 p-6">
+      <h1 className="text-2xl font-semibold">Web development curriculum</h1>
+      <div className="grid grid-cols-3 gap-6">
+        {courses.map((course) => (
+          <Course key={course.id} course={course} />
+        ))}
+      </div>
     </div>
   );
 };
